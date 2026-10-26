@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>蛋小烨 ❤ 蛋小晴</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #ffe3ec 0%, #ffd6e8 35%, #dbe9ff 100%);
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* 漂浮的爱心背景 */
+  .hearts { position: fixed; inset: 0; pointer-events: none; }
+  .heart {
+    position: absolute;
+    bottom: -60px;
+    font-size: 26px;
+    opacity: 0.6;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
+    10%  { opacity: 0.7; }
+    90%  { opacity: 0.5; }
+    100% { transform: translateY(-110vh) rotate(30deg) scale(1.2); opacity: 0; }
+  }
+
+  .stage {
+    position: relative;
+    text-align: center;
+    z-index: 2;
+  }
+
+  .title {
+    font-size: clamp(28px, 5vw, 46px);
+    font-weight: 900;
+    color: #ff4d7d;
+    text-shadow: 0 3px 0 #fff, 0 6px 18px rgba(255, 77, 125, 0.35);
+    margin-bottom: 6px;
+    letter-spacing: 2px;
+  }
+  .subtitle {
+    font-size: clamp(15px, 2.4vw, 20px);
+    color: #8a6fa8;
+    font-weight: 700;
+    margin-bottom: 28px;
+  }
+
+  .pair {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: clamp(18px, 5vw, 70px);
+  }
+
+  /* 小动物弹跳 */
+  .critter { animation: bounce 2.2s ease-in-out infinite; transform-origin: bottom center; }
+  .bunny { animation-delay: 0.3s; }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-16px); }
+  }
+
+  .name-tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 5px 16px;
+    border-radius: 20px;
+    background: #fff;
+    font-weight: 800;
+    font-size: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  }
+  .cat-name { color: #f97d3c; }
+  .bunny-name { color: #ff6fa5; }
+
+  .love-heart {
+    font-size: 46px;
+    animation: heartbeat 1.3s ease-in-out infinite;
+    align-self: center;
+    margin-bottom: 40px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    25%      { transform: scale(1.25); }
+    40%      { transform: scale(1.05); }
+    60%      { transform: scale(1.2); }
+  }
+
+  /* 点击爱心后，小猫飞向小兔的爱心 */
+  .fly-heart {
+    position: absolute;
+    z-index: 6;
+    pointer-events: none;
+    animation: flyToBunny var(--dur, 1s) ease-in-out both;
+  }
+  @keyframes flyToBunny {
+    0%   { transform: translate(0, 0) scale(0.5); opacity: 0; }
+    15%  { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { transform: translate(var(--dx, 200px), var(--dy, -20px)) scale(1.15); opacity: 0; }
+  }
+
+  /* 小猫 SVG */
+  .cat-svg { width: 150px; height: 150px; }
+  .tail { animation: wag 1.8s ease-in-out infinite; transform-origin: right center; }
+  @keyframes wag {
+    0%, 100% { transform: rotate(0deg); }
+    50%      { transform: rotate(-14deg); }
+  }
+
+  /* 小兔 SVG */
+  .bunny-svg { width: 150px; height: 150px; }
+  .ear { transform-origin: bottom center; }
+  .ear-left  { animation: ear 2.4s ease-in-out infinite; }
+  .ear-right { animation: ear 2.4s ease-in-out infinite reverse; }
+  @keyframes ear {
+    0%, 100% { transform: rotate(0deg); }
+    50%      { transform: rotate(8deg); }
+  }
+
+  .footer {
+    margin-top: 34px;
+    font-size: 13px;
+    color: #b58bb8;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="hearts" id="hearts"></div>
+
+  <div class="stage">
+    <h1 class="title">蛋小烨 ❤ 蛋小晴</h1>
+
+    <div class="pair">
+      <!-- 小猫：蛋小烨 -->
+      <div class="critter">
+        <svg class="cat-svg" viewBox="0 0 120 120">
+          <!-- 尾巴 -->
+          <path class="tail" d="M98 88 Q118 80 116 62 Q114 50 104 54" fill="none" stroke="#f97d3c" stroke-width="9" stroke-linecap="round"/>
+          <!-- 身体 -->
+          <ellipse cx="60" cy="92" rx="34" ry="26" fill="#f9a03f"/>
+          <!-- 头 -->
+          <circle cx="60" cy="52" r="30" fill="#f9a03f"/>
+          <!-- 耳朵 -->
+          <polygon points="38,30 42,8 54,24" fill="#f9a03f"/>
+          <polygon points="82,30 78,8 66,24" fill="#f9a03f"/>
+          <polygon points="41,26 43,14 50,24" fill="#ffd9b3"/>
+          <polygon points="79,26 77,14 70,24" fill="#ffd9b3"/>
+          <!-- 眼睛 -->
+          <circle cx="49" cy="50" r="5" fill="#3d2b1f"/>
+          <circle cx="71" cy="50" r="5" fill="#3d2b1f"/>
+          <circle cx="50.5" cy="48" r="1.8" fill="#fff"/>
+          <circle cx="72.5" cy="48" r="1.8" fill="#fff"/>
+          <!-- 鼻子嘴巴 -->
+          <polygon points="60,56 57,60 63,60" fill="#e06b6b"/>
+          <path d="M60 60 Q53 66 49 62 M60 60 Q67 66 71 62" fill="none" stroke="#3d2b1f" stroke-width="2" stroke-linecap="round"/>
+          <!-- 腮红 -->
+          <ellipse cx="41" cy="58" rx="6" ry="4" fill="#ffb3b3" opacity="0.7"/>
+          <ellipse cx="79" cy="58" rx="6" ry="4" fill="#ffb3b3" opacity="0.7"/>
+          <!-- 胡须 -->
+          <line x1="22" y1="52" x2="38" y2="54" stroke="#3d2b1f" stroke-width="1.5"/>
+          <line x1="22" y1="60" x2="38" y2="59" stroke="#3d2b1f" stroke-width="1.5"/>
+          <line x1="98" y1="52" x2="82" y2="54" stroke="#3d2b1f" stroke-width="1.5"/>
+          <line x1="98" y1="60" x2="82" y2="59" stroke="#3d2b1f" stroke-width="1.5"/>
+        </svg>
+        <div><span class="name-tag cat-name">蛋小烨 · 小猫 🐱</span></div>
+      </div>
+
+      <!-- 中间的爱心 -->
+      <div class="love-heart" title="点击发送爱心 💗">💗</div>
+
+      <!-- 小兔：蛋小晴 -->
+      <div class="critter bunny">
+        <svg class="bunny-svg" viewBox="0 0 120 120">
+          <!-- 耳朵 -->
+          <ellipse class="ear ear-left" cx="48" cy="16" rx="9" ry="22" fill="#fff"/>
+          <ellipse class="ear ear-left" cx="48" cy="18" rx="4.5" ry="15" fill="#ffc9dd"/>
+          <ellipse class="ear ear-right" cx="72" cy="16" rx="9" ry="22" fill="#fff"/>
+          <ellipse class="ear ear-right" cx="72" cy="18" rx="4.5" ry="15" fill="#ffc9dd"/>
+          <!-- 身体 -->
+          <ellipse cx="60" cy="92" rx="32" ry="26" fill="#ffffff"/>
+          <!-- 头 -->
+          <circle cx="60" cy="52" r="28" fill="#ffffff"/>
+          <!-- 眼睛 -->
+          <circle cx="49" cy="48" r="4.5" fill="#3d2b1f"/>
+          <circle cx="71" cy="48" r="4.5" fill="#3d2b1f"/>
+          <circle cx="50.5" cy="46" r="1.6" fill="#fff"/>
+          <circle cx="72.5" cy="46" r="1.6" fill="#fff"/>
+          <!-- 鼻子嘴巴 -->
+          <polygon points="60,55 57,59 63,59" fill="#ff6fa5"/>
+          <path d="M60 59 Q53 65 49 61 M60 59 Q67 65 71 61" fill="none" stroke="#3d2b1f" stroke-width="2" stroke-linecap="round"/>
+          <!-- 腮红 -->
+          <ellipse cx="40" cy="56" rx="6" ry="4" fill="#ffb3c6" opacity="0.8"/>
+          <ellipse cx="80" cy="56" rx="6" ry="4" fill="#ffb3c6" opacity="0.8"/>
+        </svg>
+        <div><span class="name-tag bunny-name">蛋小晴 · 小兔 🐰</span></div>
+      </div>
+    </div>
+
+    <p class="footer">每天都要开开心心呀 ✨</p>
+  </div>
+
+<script>
+  // 生成漂浮爱心
+  const heartsBox = document.getElementById('hearts');
+  const emojis = ['💗', '💖', '💕', '💘', '🩷', '💝'];
+  for (let i = 0; i < 18; i++) {
+    const h = document.createElement('span');
+    h.className = 'heart';
+    h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    h.style.left = Math.random() * 100 + '%';
+    h.style.fontSize = (18 + Math.random() * 22) + 'px';
+    h.style.animationDuration = (6 + Math.random() * 8) + 's';
+    h.style.animationDelay = (Math.random() * 10) + 's';
+    heartsBox.appendChild(h);
+  }
+
+  // 点击爱心：小猫向小兔发送爱心
+  const heartBtn = document.querySelector('.love-heart');
+  const stage = document.querySelector('.stage');
+  const cat = document.querySelector('.cat-svg');
+  const bunny = document.querySelector('.bunny-svg');
+
+  function sendHearts() {
+    const stageRect = stage.getBoundingClientRect();
+    const catRect = cat.getBoundingClientRect();
+    const bunnyRect = bunny.getBoundingClientRect();
+
+    const startX = catRect.left - stageRect.left + catRect.width * 0.8;
+    const startY = catRect.top - stageRect.top + catRect.height * 0.35;
+    const endX = bunnyRect.left - stageRect.left + bunnyRect.width * 0.2;
+    const endY = bunnyRect.top - stageRect.top + bunnyRect.height * 0.35;
+    const dx = endX - startX;
+    const dy = endY - startY;
+
+    const flyEmojis = ['💗', '💖', '💕', '💘', '🩷', '💝'];
+    for (let i = 0; i < 6; i++) {
+      const h = document.createElement('span');
+      h.className = 'fly-heart';
+      h.textContent = flyEmojis[Math.floor(Math.random() * flyEmojis.length)];
+      h.style.left = startX + 'px';
+      h.style.top = startY + 'px';
+      h.style.fontSize = (20 + Math.random() * 16) + 'px';
+      h.style.setProperty('--dx', (dx + (Math.random() * 40 - 20)) + 'px');
+      h.style.setProperty('--dy', (dy + (Math.random() * 40 - 20)) + 'px');
+      h.style.setProperty('--dur', (0.8 + Math.random() * 0.5) + 's');
+      h.style.animationDelay = (i * 0.08) + 's';
+      stage.appendChild(h);
+      setTimeout(() => h.remove(), 2200);
+    }
+  }
+
+  heartBtn.addEventListener('click', sendHearts);
+</script>
+</body>
+</html>
